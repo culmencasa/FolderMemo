@@ -1,0 +1,17 @@
+﻿<Application
+    x:Class="WpfApp1.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cc="clr-namespace:WpfControlLibrary;assembly=WpfControlLibrary"
+    xmlns:local="clr-namespace:WpfApp1"
+    StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/WpfControlLibrary;component/Themes/ContentButton.xaml" />
+
+            </ResourceDictionary.MergedDictionaries>
+            <Style BasedOn="{StaticResource ContentButtonStyle}" TargetType="{x:Type cc:ContentButton}" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
