@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FolderMemo.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +14,15 @@ namespace WpfApp1
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+
+        }
+
+        private void Application_Exit(object sender, ExitEventArgs e)
+        {
+            var locator = (ViewModelLocator)FindResource("Locator");
+            locator.Dispose();
+        }
     }
 }

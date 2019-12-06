@@ -15,7 +15,6 @@ namespace MVVMLib
 
         #endregion
 
-
         /// <summary>
         /// 消息发送对象
         /// </summary>
