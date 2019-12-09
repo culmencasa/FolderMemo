@@ -4,6 +4,7 @@ using MVVMLib;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -236,5 +237,51 @@ namespace WpfApp1
 
         #endregion
 
+
+        private void ctrlIconPreview_PreviewDragOver(object sender, DragEventArgs e)
+        {
+            e.Effects = DragDropEffects.Copy;
+            e.Handled = true;
+        }
+
+        private void ctrlIconPreview_PreviewDrop(object sender, DragEventArgs e)
+        {
+            var vm = this.DataContext as MainViewModel;
+
+            foreach (string item in (string[])e.Data.GetData(DataFormats.FileDrop))
+            {
+                FileInfo fi = new FileInfo(item);
+                if (fi.Extension == ".ico")
+                {
+                    vm.IconFileFullPath = item;
+                }
+                else
+                {
+                    MessageBox.Show("只支持 ICO 格式的图标。");
+                }
+                return;
+            }
+
+        }
+
+        private void txtFolderName_PreviewDragOver(object sender, DragEventArgs e)
+        {
+            e.Effects = DragDropEffects.Link;
+            e.Handled = true;
+        }
+
+        private void txtFolderName_PreviewDrop(object sender, DragEventArgs e)
+        {
+            var vm = this.DataContext as MainViewModel;
+
+            foreach (string item in (string[])e.Data.GetData(DataFormats.FileDrop))
+            {
+                DirectoryInfo di = new DirectoryInfo(item);
+                if (di.Exists)
+                {
+                    vm.FolderFullPath = item;
+                }
+            }
+        }
     }
 }

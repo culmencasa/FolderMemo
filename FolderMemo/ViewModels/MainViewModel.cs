@@ -21,6 +21,7 @@ namespace WpfApp1.ViewModels
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
+        #region 构造
 
         public MainViewModel()
         {
@@ -32,14 +33,31 @@ namespace WpfApp1.ViewModels
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
         }
 
+        #endregion
+
+        static readonly string DesktopINI = "desktop.ini";
+        static readonly string ShellClassSection = ".ShellClassInfo";
+
+        #region 字段
+
         private string _folderFullPath;
         private string _folderRemarks;
         private string _iconFileFullPath;
+        
+
+        #endregion
+
+        #region 属性
 
         public string FolderFullPath
         {
             get => _folderFullPath;
-            set => this.Set(ref _folderFullPath, value);
+            set
+            {
+                this.Set(ref _folderFullPath, value);
+
+                OnFolderPathChanged();
+            }
         }
 
         public string FolderRemarks
@@ -67,18 +85,22 @@ namespace WpfApp1.ViewModels
             set;
         }
 
-        private void OnIconFileChanged()
-        {
-            
-        }
+        #endregion
+
+
+        #region Command
 
         public ICommand SaveCommand { get; set; }
         public ICommand OpenFolderCommand { get; set; }
         public ICommand SelectIconCommand { get; set; }
 
+        #endregion
+
+        #region Command Actions
+
         private void SaveCommandAction()
         {
-            var targetFile = Path.Combine(FolderFullPath, "desktop.ini");
+            var targetFile = Path.Combine(FolderFullPath, DesktopINI);
             if (File.Exists(targetFile))
             {
                 File.SetAttributes(FolderFullPath, FileAttributes.Normal);
@@ -134,6 +156,43 @@ namespace WpfApp1.ViewModels
             });
         }
 
+        #endregion
+
+
+        #region 私有方法
+
+        private void OnIconFileChanged()
+        {
+            try
+            {
+                ImageUri = new Uri(IconFileFullPath, UriKind.RelativeOrAbsolute);
+                OnPropertyChanged(nameof(ImageUri));
+            }
+            catch(Exception ex)
+            {
+                Messenger.Publish(new MessageToUI(ex.Message));
+            }
+        }
+
+        private void OnFolderPathChanged()
+        {
+            string targetFile = Path.Combine(FolderFullPath, DesktopINI);
+            if (File.Exists(targetFile))
+            {
+                IniFile iniFile = new IniFile
+                {
+                    CustomEncoding = Encoding.GetEncoding("GB2312")
+                };
+                iniFile.Load(targetFile);
+
+                var section = iniFile.Section(ShellClassSection);
+                FolderRemarks = section.Get("InfoTip");
+                
+            }
+        }
+
+
+        #endregion
     }
 
 
