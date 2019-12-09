@@ -4,8 +4,8 @@ using System.Text;
 
 namespace FolderMemo.ViewModels
 {
-    public static class Notifications
+    public static class Intents
     {
-        //public static string IconChanged = "IconChanged";
+        public static readonly string IconChanged = "IconChanged";
     }
 }

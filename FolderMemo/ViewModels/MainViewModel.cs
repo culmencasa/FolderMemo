@@ -82,7 +82,7 @@ namespace WpfApp1.ViewModels
             if (File.Exists(targetFile))
             {
                 File.SetAttributes(FolderFullPath, FileAttributes.Normal);
-                File.SetAttributes(targetFile, FileAttributes.Normal|FileAttributes.Archive);
+                File.SetAttributes(targetFile, FileAttributes.Normal | FileAttributes.Archive);
             }
 
 
@@ -104,7 +104,10 @@ namespace WpfApp1.ViewModels
             File.SetAttributes(targetFile, FileAttributes.System | FileAttributes.Hidden);
             File.SetAttributes(FolderFullPath, FileAttributes.System);
 
+            Messenger.Publish(new MessageToUI(Intents.IconChanged, new object[] { targetFile }));
             Messenger.Publish(new MessageToUI("已保存"));
+
+
         }
 
         private void OpenFolderCommandAction()
@@ -132,4 +135,8 @@ namespace WpfApp1.ViewModels
         }
 
     }
+
+
+
+
 }
