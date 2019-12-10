@@ -46,7 +46,7 @@ namespace WpfApp1
                 {
                     case MessageTypes.Text:
                         {
-                            MessageBox.Show(message.Text);
+                            MessageBox.Show(message.Text, "提示", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
                         break;
                     case MessageTypes.Intent:
@@ -257,7 +257,7 @@ namespace WpfApp1
                 }
                 else
                 {
-                    MessageBox.Show("只支持 ICO 格式的图标。");
+                    MessageBox.Show("只支持 ICO 格式的图标。", "提示", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                 }
                 return;
             }

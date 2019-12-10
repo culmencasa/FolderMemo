@@ -100,6 +100,29 @@ namespace WpfApp1.ViewModels
 
         private void SaveCommandAction()
         {
+            if (!IsValidPath(FolderFullPath, true))
+            {
+                Messenger.Publish(new MessageToUI("文件夹路径错误"));
+                return;
+            }
+
+
+            if (string.IsNullOrEmpty(FolderRemarks))
+            {
+                Messenger.Publish(new MessageToUI("文件夹备注未填写"));
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(IconFileFullPath))
+            {
+                if (!IsIconValid())
+                {
+                    Messenger.Publish(new MessageToUI("只支持 ico 格式的图标"));
+                    return;
+                }
+            }
+
+
             var targetFile = Path.Combine(FolderFullPath, DesktopINI);
             if (File.Exists(targetFile))
             {
@@ -127,7 +150,7 @@ namespace WpfApp1.ViewModels
             File.SetAttributes(FolderFullPath, FileAttributes.System);
 
             Messenger.Publish(new MessageToUI(Intents.IconChanged, new object[] { targetFile }));
-            Messenger.Publish(new MessageToUI("已保存"));
+            Messenger.Publish(new MessageToUI("文件夹备注设置成功"));
 
 
         }
@@ -187,10 +210,56 @@ namespace WpfApp1.ViewModels
 
                 var section = iniFile.Section(ShellClassSection);
                 FolderRemarks = section.Get("InfoTip");
+                IconFileFullPath = section.Get("IconFile");
                 
             }
         }
 
+        private bool IsValidPath(string path, bool exactPath = true)
+        {
+            bool isValid = true;
+
+            try
+            {
+                string fullPath = Path.GetFullPath(path);
+
+                if (exactPath)
+                {
+                    string root = Path.GetPathRoot(path);
+                    isValid = string.IsNullOrEmpty(root.Trim(new char[] { '\\', '/' })) == false;
+                }
+                else
+                {
+                    isValid = Path.IsPathRooted(path);
+                }
+
+                DirectoryInfo di = new DirectoryInfo(path);
+                isValid = isValid && di.Exists;
+
+            }
+            catch (Exception ex)
+            {
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        private bool IsIconValid()
+        {
+            FileInfo fi = new FileInfo(IconFileFullPath);
+            if (!fi.Exists)
+            {
+                return false;
+            }
+
+            if (fi.Extension != ".ico")
+            {
+                return false;
+            }
+
+            return true;
+        }
 
         #endregion
     }
