@@ -14,6 +14,7 @@
     DataContext="{Binding Main, Source={StaticResource Locator}}"
     ResizeMode="NoResize"
     SizeToContent="WidthAndHeight"
+    WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Window.Resources />
     <Grid>
@@ -52,12 +53,12 @@
                         </Grid.ColumnDefinitions>
                         <cc:HintTextbox
                             x:Name="txtFolderName"
-                            AllowDrop="True"
-                            PreviewDragOver="txtFolderName_PreviewDragOver"
-                            PreviewDrop="txtFolderName_PreviewDrop"
                             VerticalContentAlignment="Center"
+                            AllowDrop="True"
                             BorderThickness="0"
                             HintText="请指定要备注的文件夹"
+                            PreviewDragOver="txtFolderName_PreviewDragOver"
+                            PreviewDrop="txtFolderName_PreviewDrop"
                             Text="{Binding FolderFullPath}" />
 
                         <cc:ContentButton

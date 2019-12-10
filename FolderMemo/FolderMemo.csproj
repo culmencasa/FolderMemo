@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MVVMLib\MVVMLib.csproj" />
-    <ProjectReference Include="..\Utils.Enhancement\Utils.Enhancement.csproj" />
     <ProjectReference Include="..\Utils.Misc\Utils.Misc.csproj" />
     <ProjectReference Include="..\WpfControlLibrary\WpfControlLibrary.csproj" />
   </ItemGroup>

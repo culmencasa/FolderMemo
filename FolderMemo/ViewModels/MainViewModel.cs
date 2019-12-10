@@ -237,7 +237,7 @@ namespace WpfApp1.ViewModels
                 isValid = isValid && di.Exists;
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 isValid = false;
             }
