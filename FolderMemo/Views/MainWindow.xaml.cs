@@ -23,10 +23,19 @@ namespace FolderMemo
         {
             InitializeComponent();
 
-            this.Title = "Folder Memo";
+            App.LanguageChanged += App_LanguageChanged;
+            this.Title = App.GetLocalizeString("AppTitle");
 
             Loaded += MainWindow_Loaded;
 
+        }
+
+        private void App_LanguageChanged()
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                this.Title = App.GetLocalizeString("AppTitle");
+            }));
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -54,12 +63,12 @@ namespace FolderMemo
                         {
                             if (message.IntentName == Intents.IconChanged)
                             {
-                                // 刷新图标2
-                                //RefreshIcon();
-
                                 // 刷新图标1(没效果）
                                 //SHChangeNotify(HChangeNotifyEventID.SHCNE_DELETE, HChangeNotifyFlags.SHCNF_PATHA, message.IntentArguments[0].ToString(), IntPtr.Zero);
                                 //SHChangeNotify(HChangeNotifyEventID.SHCNE_ASSOCCHANGED, HChangeNotifyFlags.SHCNF_IDLIST, IntPtr.Zero, IntPtr.Zero);
+
+                                // 刷新图标2
+                                //RefreshIcon();
 
                                 // 刷新资源管理器
                                 RefreshExplorer();
@@ -82,8 +91,6 @@ namespace FolderMemo
         }
 
         #endregion
-
-
 
         #region Refresh Icon 3
 

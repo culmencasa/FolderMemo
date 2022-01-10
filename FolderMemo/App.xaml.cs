@@ -49,16 +49,40 @@ namespace FolderMemo
 
         #region Localization
 
+        private static int currentLocalization = 0;
+        /// <summary>
+        /// 0 表示中文 1 表示英文
+        /// </summary>
+        public static int CurrentLocalization
+        {
+            get
+            {
+                return currentLocalization;
+            }
+            set
+            {
+                bool isAboutToChange = currentLocalization != value;
+                currentLocalization = value;
+                if (isAboutToChange)
+                {
+                    LanguageChanged?.Invoke();
+                }
+            }
+        }
+
+        public static object LockObject = new object();
+
+        public static event Action LanguageChanged;
+
         public static string GetLocalizeString(string keyName)
         {
             return Conversion.ToDefaultString(Application.Current.FindResource(keyName));
         }
 
-        public static int CurrentLocalization = 0;
 
-        public static object LockObject = new object();
-
-
+        /// <summary>
+        /// 在中文两种语言中切换
+        /// </summary>
         public static void SwitchLanguage()
         {
             lock (LockObject)
@@ -124,7 +148,7 @@ namespace FolderMemo
             }
 
             switch (languageIndex)
-            { 
+            {
                 case 0: // 中文
                     {
                         var targetResourceDictionary = new ResourceDictionary() { Source = new Uri(languageSourceCN, UriKind.Relative) };
@@ -188,7 +212,7 @@ namespace FolderMemo
 
             Application.Current.Shutdown();
 
-            
+
         }
     }
 }

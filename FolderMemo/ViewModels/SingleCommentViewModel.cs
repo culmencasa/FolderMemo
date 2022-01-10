@@ -48,7 +48,8 @@ namespace FolderMemo.ViewModels
         private string _folderFullPath;
         private string _folderRemarks;
         private string _iconFileFullPath;
-        
+        private Uri _imageUri;
+
 
         #endregion
 
@@ -59,9 +60,11 @@ namespace FolderMemo.ViewModels
             get => _folderFullPath;
             set
             {
-                this.Set(ref _folderFullPath, value);
-
-                OnFolderPathChanged();
+                bool isValueChanged = this.Set(ref _folderFullPath, value);
+                if (isValueChanged)
+                {
+                    OnFolderPathChanged();
+                }
             }
         }
 
@@ -75,9 +78,8 @@ namespace FolderMemo.ViewModels
             get => _iconFileFullPath;
             set
             {
-                var changed = Set(ref _iconFileFullPath, value);
-
-                if (changed)
+                bool isValueChanged = Set(ref _iconFileFullPath, value);
+                if (isValueChanged)
                 {
                     OnIconFileChanged();
                 }
@@ -86,8 +88,14 @@ namespace FolderMemo.ViewModels
 
         public Uri ImageUri
         {
-            get;
-            set;
+            get
+            {
+                return _imageUri;
+            }
+            set
+            {
+                Set(ref _imageUri, value);
+            }
         }
 
         #endregion
@@ -200,10 +208,16 @@ namespace FolderMemo.ViewModels
 
         private void ResetCommandAction()
         {
-            this.IconFileFullPath = null;
-            this.FolderFullPath = null;
             this.FolderRemarks = null;
+            this.IconFileFullPath = null;
             this.ImageUri = null;
+
+            if (IsValidPath(FolderFullPath, true))
+            {
+                SaveCommandAction();
+            }
+
+            this.FolderFullPath = null;
         }
 
 
