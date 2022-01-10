@@ -203,6 +203,7 @@ namespace FolderMemo.ViewModels
             this.IconFileFullPath = null;
             this.FolderFullPath = null;
             this.FolderRemarks = null;
+            this.ImageUri = null;
         }
 
 
@@ -214,6 +215,9 @@ namespace FolderMemo.ViewModels
 
         private void OnIconFileChanged()
         {
+            if (string.IsNullOrEmpty(IconFileFullPath))
+                return;
+
             try
             {
                 ImageUri = new Uri(IconFileFullPath, UriKind.RelativeOrAbsolute);
