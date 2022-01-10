@@ -51,10 +51,10 @@ namespace FolderMemo.Services
             
 
             VistaFolderBrowserDialog dialog = new VistaFolderBrowserDialog();
-            dialog.Description = "选择要添加注释的文件夹";
+            dialog.Description = App.GetLocalizeString("ChangeDirectoryDialogDescription"); // "选择要添加注释的文件夹";
             dialog.UseDescriptionForTitle = true;
             if (!VistaFolderBrowserDialog.IsVistaFolderDialogSupported)
-                MessageBox.Show("不支持的系统");
+                MessageBox.Show(App.GetLocalizeString("ChangeDirectoryDialogDescription"));
 
             var owner = Application.Current.Windows.OfType<Window>().FirstOrDefault(p => p.IsEnabled && p.IsVisible);
             if ((bool)dialog.ShowDialog(owner))

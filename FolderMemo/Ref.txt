@@ -1,0 +1,18 @@
+﻿
+https://stackoverflow.com/questions/20632612/custom-file-properties
+
+了解Property
+https://docs.microsoft.com/zh-cn/windows/win32/properties/property-system-overview
+
+了解File Types
+https://docs.microsoft.com/zh-cn/windows/win32/shell/fa-file-types?redirectedfrom=MSDN
+
+了解Programmatic Identifiers
+https://docs.microsoft.com/zh-cn/windows/win32/shell/fa-progids
+
+开发
+https://docs.microsoft.com/zh-cn/windows/win32/search/-search-3x-wds-extidx-propertyhandlers?redirectedfrom=MSDN
+
+关于快捷方式lnk文件
+https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/16cb4ca1-9339-4d0c-a68d-bf1d6cc0f943?redirectedfrom=MSDN
+

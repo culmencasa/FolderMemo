@@ -1,0 +1,21 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <sys:String x:Key="ChangeDirectoryDialogDescription">Select a folder you want to add memo</sys:String>
+
+    <sys:String x:Key="ChangeDirectoryDialogOpenFail">Not supported</sys:String>
+    <sys:String x:Key="SinglePageFolderPath">Folder Path：</sys:String>
+    <sys:String x:Key="SinglePageFolderMemo">Folder Memo：</sys:String>
+    <sys:String x:Key="OpenFolderCommandTooltip">Select Folder in Dialog</sys:String>
+    <sys:String x:Key="FolderPathTextboxHint">Drag a folder to here</sys:String>
+    <sys:String x:Key="MemoTextboxHint">Write your memo here...</sys:String>
+    <sys:String x:Key="SinglePageIconPath">Icon Path: </sys:String>
+    <sys:String x:Key="SaveButtonText">Save</sys:String>
+    <sys:String x:Key="SwitchToBatchButtonText">Switch to batch mode</sys:String>
+    <sys:String x:Key="SaveCompleteText">You may need to wait a couple of time or reopen Explorer to see the effect.</sys:String>
+    <sys:String x:Key="LanguageButtonText">切换为中文</sys:String>
+
+    <sys:String x:Key="ResetText">Reset</sys:String>
+    <sys:String x:Key="UnauthorizedAccessText">Access Denied. Relaunch program with "Run as Administrator".</sys:String>
+    <sys:String x:Key="AdminModeHint">Note: In Administrator mode, Drag N Drop feature will not work. </sys:String>
+</ResourceDictionary>

@@ -1,0 +1,22 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+	<sys:String x:Key="ChangeDirectoryDialogDescription">选择要添加注释的文件夹</sys:String>
+	<sys:String x:Key="ChangeDirectoryDialogOpenFail">不支持的系统</sys:String>
+	<sys:String x:Key="SinglePageFolderPath">文件夹路径：</sys:String>
+	<sys:String x:Key="SinglePageFolderMemo">文件夹备注：</sys:String>
+	<sys:String x:Key="OpenFolderCommandTooltip">打开文件夹选择对话框</sys:String>
+	<sys:String x:Key="FolderPathTextboxHint">拖动一个文件夹到这里</sys:String>
+	<sys:String x:Key="MemoTextboxHint">输入备注信息...</sys:String>
+	<sys:String x:Key="SinglePageIconPath">文件夹图标：</sys:String>
+	<sys:String x:Key="SaveButtonText">保存</sys:String>
+	<sys:String x:Key="SwitchToBatchButtonText">批量改备注</sys:String>
+	<sys:String x:Key="SaveCompleteText">文件夹备注设置成功. 可能需要重新启动一个新的资源管理器才能看到效果. </sys:String>
+	<sys:String x:Key="FolderMemoEmptyErrorText">文件夹备注未填写</sys:String>
+	<sys:String x:Key="FolderPathErrorText">文件夹路径错误</sys:String>
+    <sys:String x:Key="LanguageButtonText">Switch To English</sys:String>
+    <sys:String x:Key="ResetText">重置</sys:String>
+    <sys:String x:Key="UnauthorizedAccessText">权限不足, 请以管理员身份运行.</sys:String>
+    <sys:String x:Key="AdminModeHint">注意: 管理员身份运行的模式下将不支持拖拽.</sys:String>
+    
+</ResourceDictionary>

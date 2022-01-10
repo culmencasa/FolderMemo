@@ -1,0 +1,112 @@
+﻿<UserControl x:Class="FolderMemo.BatchCommentPage" x:Name="pageBatchEdit"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FolderMemo" xmlns:cc="clr-namespace:WpfControlLibrary;assembly=WpfControlLibrary"
+        mc:Ignorable="d"
+        DataContext="{Binding BatchCommentVM, Source={StaticResource Locator}}" 
+        Width="Auto"
+        Height="Auto"
+        AllowDrop="True">
+    <UserControl.Resources>
+
+        <ContextMenu x:Key="ContextMenuForListBox" DataContext="{Binding BatchCommentVM, Source={StaticResource Locator}}">
+            <!--<MenuItem Name="SelectMultipleFolders" Header="添加路径" Command="{Binding ShowPathDialogCommand}" />
+            <Separator />-->
+            <MenuItem Name="RemoveAll" Header="清除所有" Command="{Binding RemoveAllCommand}" />
+        </ContextMenu>
+        <ContextMenu x:Key="ContextMenuForListBoxItem" DataContext="{Binding BatchCommentVM, Source={StaticResource Locator}}">
+            <MenuItem Name="Remove" Header="移除" Command="{Binding RemoveCommand}"  />
+            <Separator />
+            <MenuItem Header="清除所有" Command="{Binding RemoveAllCommand}" />
+        </ContextMenu>
+    </UserControl.Resources>
+    <Border
+            x:Name="bodyBorder"
+            Width="300"
+            Height="400"
+            Margin="20,20,14,20"
+            Padding="20"
+            Background="AliceBlue"
+            CornerRadius="20">
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="10" />
+                <RowDefinition Height="40" />
+            </Grid.RowDefinitions>
+
+            <Label Content="要修改的文件夹：" />
+            <Border
+                        Grid.Row="1"
+                        Padding="8"
+                        Background="White"
+                        BorderBrush="LightGray"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                <ListBox ItemsSource="{Binding BatchCommentFolders}" PreviewDragOver="txtFolderName_PreviewDragOver" PreviewDrop="txtFolderName_PreviewDrop" SelectedItem="{Binding SelectedItemText}" ContextMenu="{StaticResource ContextMenuForListBox}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding }" ToolTip="{Binding }" ContextMenu="{StaticResource ContextMenuForListBoxItem}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Border>
+            <Label Content="文件夹备注：" Grid.Row="2" />
+            <Border
+                    Grid.Row="3"
+                    Height="60"
+                    Padding="8,4,4,4"
+                    Background="White"
+                    BorderBrush="LightGray"
+                    BorderThickness="1"
+                    CornerRadius="8">
+                <cc:HintTextbox
+                        AcceptsReturn="True"
+                        BorderThickness="0"
+                        HintText="备注文字"
+                        Text="{Binding FolderRemarks}"
+                        TextWrapping="Wrap"
+                        VerticalScrollBarVisibility="Visible" />
+            </Border>
+            <TextBlock Grid.Row="4" />
+            <Grid Grid.Row="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30*" />
+                    <ColumnDefinition Width="30*" />
+                    <ColumnDefinition Width="30*" />
+                </Grid.ColumnDefinitions>
+                <cc:ContentButton
+                        x:Name="btnSave"
+                        Width="Auto"
+                        Height="40"
+                        Grid.Column="1"
+                        BorderThickness="2"
+                        PreviewMouseDown="btnSave_PreviewMouseDown"
+                        PreviewMouseUp="btnSave_PreviewMouseUp"
+                        Command="{Binding SaveCommand}"
+                        Content="保存" />
+
+                <cc:ContentButton x:Name="btnSwitchToSingle"
+                                      Command="{Binding SwitchPageCommand }"
+                                      Width="20" Height="20" Content="S"
+                                      BorderBackground="DeepSkyBlue"
+                                      Foreground="LightBlue"
+                                      BorderThickness="0"
+                                      CornerRadius="20"
+                                      Grid.Column="2"
+                                      Margin="10"
+                                      HorizontalAlignment="Left"
+                                      ToolTip="批量改备注"  />
+
+            </Grid>
+            
+            
+        </Grid>
+    </Border>
+</UserControl>

@@ -23,5 +23,8 @@ namespace WpfControlLibrary
 
         public static DependencyProperty HintTextProperty = DependencyProperty.Register(
             nameof(HintText), typeof(string), typeof(HintTextbox));
+
+
+        //todo: 文本框为单行时, 提示居中对齐. 文本框为多行时, 提示顶部对齐.
     }
 }

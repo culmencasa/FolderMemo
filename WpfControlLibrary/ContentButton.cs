@@ -39,6 +39,6 @@ namespace WpfControlLibrary
         public static readonly DependencyProperty BorderBackgroundProperty =
             DependencyProperty.Register(nameof(BorderBackground), typeof(Brush), typeof(ContentButton));
 
-        
+
     }
 }

@@ -10,8 +10,4 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="CustomControls\" />
-  </ItemGroup>
-
 </Project>

@@ -1,87 +1,42 @@
-﻿using FolderMemo.Services;
-using FolderMemo.ViewModels;
-using MVVMLib;
+﻿using FolderMemo.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Utils.Enhancement;
-using WpfApp1.ViewModels;
+using WpfControlLibrary;
 
-namespace WpfApp1
+namespace FolderMemo.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// SingleCommentPage.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class SingleCommentPage : UserControl // 继承Page,渐变动画是从黑色到白色, 而不是透明到白色. 所以改从UserControl继承
     {
-        public MainWindow()
+        public SingleCommentPage()
         {
             InitializeComponent();
-
-
-            Loaded += MainWindow_Loaded;
-
-        }
-
-        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            SimpleMessenger.Default.Subscribe<MessageToUI>(this, message =>
-            {
-                switch (message.Type)
-                {
-                    case MessageTypes.Text:
-                        {
-                            MessageBox.Show(message.Text, "提示", MessageBoxButton.OK, MessageBoxImage.Information);
-                        }
-                        break;
-                    case MessageTypes.Intent:
-                        {
-                            if (message.IntentName == Intents.IconChanged)
-                            {
-                                // 刷新图标2
-                                RefreshIcon();
-
-                                // 刷新图标1(没效果）
-                                //SHChangeNotify(HChangeNotifyEventID.SHCNE_DELETE, HChangeNotifyFlags.SHCNF_PATHA, message.IntentArguments[0].ToString(), IntPtr.Zero);
-                                //SHChangeNotify(HChangeNotifyEventID.SHCNE_ASSOCCHANGED, HChangeNotifyFlags.SHCNF_IDLIST, IntPtr.Zero, IntPtr.Zero);
-
-                            }
-                        }
-                        break;
-                }
-            });
         }
 
 
-        private void ContentButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-
-        #region 刷新图标1
+        #region Refresh Icon 1
 
         [DllImport("shell32.dll")]
-        public static extern void SHChangeNotify(HChangeNotifyEventID wEventId, HChangeNotifyFlags uFlags, IntPtr dwItem1, IntPtr dwItem2);
+        private static extern void SHChangeNotify(HChangeNotifyEventID wEventId, HChangeNotifyFlags uFlags, IntPtr dwItem1, IntPtr dwItem2);
 
 
         [Flags]
-        public enum HChangeNotifyFlags
+        private enum HChangeNotifyFlags
         {
             SHCNF_DWORD = 0x0003,
             SHCNF_IDLIST = 0x0000,
@@ -94,7 +49,7 @@ namespace WpfApp1
         }
 
         [Flags]
-        public enum HChangeNotifyEventID
+        private enum HChangeNotifyEventID
         {
             SHCNE_ALLEVENTS = 0x7FFFFFFF,
             SHCNE_ASSOCCHANGED = 0x08000000,
@@ -122,7 +77,7 @@ namespace WpfApp1
 
         #endregion
 
-        #region 刷新图标2
+        #region Refresh Icon 2
 
         private string getVersion()
         {
@@ -212,6 +167,8 @@ namespace WpfApp1
 
         private void RefreshIcon()
         {
+            //ie4uinit - show
+
             string osVersion = getVersion();
             if (osVersion == "Windows 10" || osVersion == "Windows 8")
             {
@@ -238,6 +195,9 @@ namespace WpfApp1
         #endregion
 
 
+
+        #region Icon Area Drag&Drop 
+
         private void ctrlIconPreview_PreviewDragOver(object sender, DragEventArgs e)
         {
             e.Effects = DragDropEffects.Copy;
@@ -246,7 +206,7 @@ namespace WpfApp1
 
         private void ctrlIconPreview_PreviewDrop(object sender, DragEventArgs e)
         {
-            var vm = this.DataContext as MainViewModel;
+            var vm = this.DataContext as SingleCommentViewModel;
 
             foreach (string item in (string[])e.Data.GetData(DataFormats.FileDrop))
             {
@@ -264,6 +224,10 @@ namespace WpfApp1
 
         }
 
+        #endregion
+
+        #region Folder Path Area Drag&Drop
+
         private void txtFolderName_PreviewDragOver(object sender, DragEventArgs e)
         {
             e.Effects = DragDropEffects.Link;
@@ -272,7 +236,7 @@ namespace WpfApp1
 
         private void txtFolderName_PreviewDrop(object sender, DragEventArgs e)
         {
-            var vm = this.DataContext as MainViewModel;
+            var vm = this.DataContext as SingleCommentViewModel;
 
             foreach (string item in (string[])e.Data.GetData(DataFormats.FileDrop))
             {
@@ -283,5 +247,36 @@ namespace WpfApp1
                 }
             }
         }
+
+        #endregion
+
+        #region Save Button
+
+        private void btnSave_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ContentButton b = e.Source as ContentButton;
+            b.BorderBackground = Brushes.Chocolate;
+            b.Foreground = Brushes.White;
+        }
+
+        private void btnSave_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            ContentButton b = e.Source as ContentButton;
+            b.BorderBackground = Brushes.White;
+            b.Foreground = Brushes.Black;
+        }
+
+        #endregion
+
+        #region Switch Button
+
+
+        private void btnSwitchToBatch_Click(object sender, RoutedEventArgs e)
+        {
+            this.Content = new BatchCommentPage();
+        }
+
+
+        #endregion
     }
 }

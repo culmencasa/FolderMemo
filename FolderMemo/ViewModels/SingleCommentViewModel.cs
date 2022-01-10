@@ -4,12 +4,14 @@ using FolderMemo.ViewModels;
 using MVVMLib;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Input;
-using Utils.Misc;
+using Utils;
 
-namespace WpfApp1.ViewModels
+namespace FolderMemo.ViewModels
 {
     /// <summary>
     /// 规则参见： https://docs.microsoft.com/en-us/windows/win32/shell/how-to-customize-folders-with-desktop-ini
@@ -19,26 +21,29 @@ namespace WpfApp1.ViewModels
     /// IconIndex       Set this entry to specify the index for a custom icon.If the file assigned to IconFile only contains a single icon, set IconIndex to 0.
     /// InfoTip         Set this entry to an informational text string. It is displayed as an infotip when the cursor hovers over the folder.If the user clicks the folder, the information text is displayed in the folder's information block, below the standard information.
     /// </summary>
-    public class MainViewModel : ViewModelBase
+    public class SingleCommentViewModel : ViewModelBase
     {
-        #region 构造
+        #region Construct
 
-        public MainViewModel()
+        public SingleCommentViewModel()
         {
             SaveCommand = new RelayCommand(SaveCommandAction);
             OpenFolderCommand = new RelayCommand(OpenFolderCommandAction);
             SelectIconCommand = new RelayCommand(SelectIconCommandAction);
+            SwitchPageCommand = new RelayCommand(SwitchPageCommandAction);
+            ResetCommand = new RelayCommand(ResetCommandAction);
 
             //对引用的编码使用 Encoding.RegisterProvider 函数进行注册
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
         }
+
 
         #endregion
 
         static readonly string DesktopINI = "desktop.ini";
         static readonly string ShellClassSection = ".ShellClassInfo";
 
-        #region 字段
+        #region Fields
 
         private string _folderFullPath;
         private string _folderRemarks;
@@ -47,7 +52,7 @@ namespace WpfApp1.ViewModels
 
         #endregion
 
-        #region 属性
+        #region Properties
 
         public string FolderFullPath
         {
@@ -94,6 +99,10 @@ namespace WpfApp1.ViewModels
         public ICommand OpenFolderCommand { get; set; }
         public ICommand SelectIconCommand { get; set; }
 
+        public ICommand SwitchPageCommand { get; set; }
+
+        public ICommand ResetCommand { get; set; }
+
         #endregion
 
         #region Command Actions
@@ -102,23 +111,22 @@ namespace WpfApp1.ViewModels
         {
             if (!IsValidPath(FolderFullPath, true))
             {
-                Messenger.Publish(new MessageToUI("文件夹路径错误"));
+                Messenger.Publish(new MessageToUI(App.GetLocalizeString("FolderPathErrorText")));
                 return;
             }
 
-
-            if (string.IsNullOrEmpty(FolderRemarks))
-            {
-                Messenger.Publish(new MessageToUI("文件夹备注未填写"));
-                return;
-            }
+            // 2022-01-10 允许备注为空
+            //if (string.IsNullOrEmpty(FolderRemarks))
+            //{
+            //    Messenger.Publish(new MessageToUI(App.GetLocalizeString("FolderMemoEmptyErrorText")));
+            //    return;
+            //}
 
             if (!string.IsNullOrEmpty(IconFileFullPath))
             {
                 if (!IsIconValid())
                 {
-                    Messenger.Publish(new MessageToUI("只支持 ico 格式的图标"));
-                    return;
+                    // 保持不变, 也不再提示
                 }
             }
 
@@ -131,10 +139,15 @@ namespace WpfApp1.ViewModels
             }
 
 
-            IniFile iniFile = new IniFile
+            IniFile iniFile = new IniFile();
+            if (App.CurrentLocalization == 0)
             {
-                CustomEncoding = Encoding.GetEncoding("GB2312")
-            };
+                iniFile.CustomEncoding = Encoding.GetEncoding("GB2312");
+            }
+            else
+            {
+                iniFile.CustomEncoding = Encoding.Default;
+            }
             if (File.Exists(targetFile))
             {
                 iniFile.Load(targetFile);
@@ -149,9 +162,9 @@ namespace WpfApp1.ViewModels
             File.SetAttributes(targetFile, FileAttributes.System | FileAttributes.Hidden);
             File.SetAttributes(FolderFullPath, FileAttributes.System);
 
+            //刷新图标
             Messenger.Publish(new MessageToUI(Intents.IconChanged, new object[] { targetFile }));
-            Messenger.Publish(new MessageToUI("文件夹备注设置成功"));
-
+            Messenger.Publish(new MessageToUI(App.GetLocalizeString("SaveCompleteText")));
 
         }
 
@@ -179,10 +192,25 @@ namespace WpfApp1.ViewModels
             });
         }
 
+        private void SwitchPageCommandAction()
+        {
+            Messenger.Publish(new MessageToUI(Intents.PageSwitch, new object[] { "BatchCommentPageKey" }));
+        }
+
+
+        private void ResetCommandAction()
+        {
+            this.IconFileFullPath = null;
+            this.FolderFullPath = null;
+            this.FolderRemarks = null;
+        }
+
+
+
         #endregion
 
 
-        #region 私有方法
+        #region Private Methods
 
         private void OnIconFileChanged()
         {
@@ -199,19 +227,21 @@ namespace WpfApp1.ViewModels
 
         private void OnFolderPathChanged()
         {
+            if (string.IsNullOrEmpty(FolderFullPath))
+                return;
+
             string targetFile = Path.Combine(FolderFullPath, DesktopINI);
             if (File.Exists(targetFile))
             {
                 IniFile iniFile = new IniFile
                 {
-                    CustomEncoding = Encoding.GetEncoding("GB2312")
+                    CustomEncoding = Encoding.GetEncoding("GB2312") 
                 };
                 iniFile.Load(targetFile);
 
                 var section = iniFile.Section(ShellClassSection);
                 FolderRemarks = section.Get("InfoTip");
                 IconFileFullPath = section.Get("IconFile");
-                
             }
         }
 
@@ -247,7 +277,7 @@ namespace WpfApp1.ViewModels
 
         private bool IsIconValid()
         {
-            FileInfo fi = new FileInfo(IconFileFullPath);
+            FileInfo fi = new FileInfo(Environment.ExpandEnvironmentVariables(IconFileFullPath));
             if (!fi.Exists)
             {
                 return false;
@@ -263,8 +293,4 @@ namespace WpfApp1.ViewModels
 
         #endregion
     }
-
-
-
-
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Utils.Misc
+namespace Utils
 {
 
     /// <summary>

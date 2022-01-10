@@ -16,19 +16,31 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Remove="Resources\StringResource.xaml" />
+    <Page Remove="Resources\StringResource.zh-CN.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MVVMLib\MVVMLib.csproj" />
-    <ProjectReference Include="..\Utils.Misc\Utils.Misc.csproj" />
     <ProjectReference Include="..\WpfControlLibrary\WpfControlLibrary.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.9.4" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.4.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Helper\" />
-    <Folder Include="Themes\" />
+    <PackageReference Include="Trinet.Core.IO.Ntfs" Version="4.1.1" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Folder-32.png" />
+    <Resource Include="Resources\StringResource.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Resources\StringResource.zh-CN.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Themes\LinkButton.xaml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Page>
   </ItemGroup>
 </Project>

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Utils.Misc
+namespace Utils
 {
     /// <summary>
     /// Represents a property in an INI file.

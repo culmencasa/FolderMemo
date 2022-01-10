@@ -1,16 +1,19 @@
 ﻿<Application
-    x:Class="WpfApp1.App"
+    x:Class="FolderMemo.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:cc="clr-namespace:WpfControlLibrary;assembly=WpfControlLibrary"
     xmlns:viewmodels="clr-namespace:FolderMemo.ViewModels"
     Exit="Application_Exit"
-    StartupUri="MainWindow.xaml">
+    StartupUri="Views\MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/WpfControlLibrary;component/Themes/ContentButton.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/WpfControlLibrary;component/Themes/HintTextBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/FolderMemo;component/Themes/LinkButton.xaml" />
+                <!--<ResourceDictionary x:Name="lango" Source="Resources\StringResource.xaml" />-->
+                <ResourceDictionary x:Name="lango" Source="Resources\StringResource.zh-CN.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <Style BasedOn="{StaticResource ContentButtonStyle}" TargetType="{x:Type cc:ContentButton}" />
 

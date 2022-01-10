@@ -46,6 +46,20 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver"
+                     Value="True">
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect BlurRadius="10"
+                                          Direction="0"
+                                          Opacity="0.5"
+                                          ShadowDepth="0"
+                                          Color="{Binding BorderBrush.Color, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
 
